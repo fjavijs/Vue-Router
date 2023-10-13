@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-//import { resolve } from 'core-js/library/es6/promise'
+import isAuthenticated from './auth-guard'
+
 const routes = [
 
 	{
@@ -32,7 +33,7 @@ const routes = [
 				component: () => import(/*webpackChunkName:"aboutPage"*/'@/modulos/pokemon/pages/pokemonPage'),
 				props: (route) => {
 					const id = Number(route.params.id)
-					console.log(id)
+					//console.log(id)
 					return isNaN(id) ? { id: 1 } : { id: id }
 				}
 			},
@@ -49,6 +50,7 @@ const routes = [
 	{
 		path: '/dbz',
 		name: 'dbz',
+		beforeEnter: [ isAuthenticated ],
 		component: () => import(/*webpackChunkName:"aboutPage"*/'@/modulos/dbz/layout/DragonBallLayout'),
 		children: [
 			{
@@ -56,11 +58,11 @@ const routes = [
 				name: 'dbz-character',
 				component: () => import(/*webpackChunkName:"aboutPage"*/'@/modulos/dbz/pages/character')
 			},
-			//{
-			//	path: 'about',
-			//	name: 'dbz-about',
-			//	component: () => import(/*webpackChunkName:"aboutPage"*/'@/modulos/dbz/pages/about')
-			//},
+			{
+				path: 'about',
+				name: 'dbz-about',
+				component: () => import(/*webpackChunkName:"aboutPage"*/'@/modulos/dbz/pages/about')
+			},
 			{
 				path: '',
 				redirect: {
@@ -82,4 +84,47 @@ const router = createRouter({
 	  history: createWebHashHistory(),
       routes,
 })
+
+// Guard global sincrono
+
+//router.beforeEach( (to, from, next) => {
+
+//	///*console.log({ to, from, next });*/
+//	//const random = Math.random() * 100
+//	///*console.log(random)*/
+//	//if (random < 50) {
+//	//	console.log('autenticado')
+//	//	next()
+//	//} else {
+//	//	console.log('Bloqueado por el forEach Guard')
+//	//	next({ name:'pokemon-home'})
+//	//}
+//})
+
+
+// Guard global asincrono
+
+//const canAccess = () => {
+
+//	return new Promise(resolve => {
+
+//		const random = Math.random() * 100
+//		if (random < 50) {
+//			console.log('Autenticado -- CanAccess')
+//			resolve(true)
+//		} else {
+//			console.log('Bloqueado por el forEach Guard')
+//			resolve(false)
+//		}
+//	} )
+//}
+//router.beforeEach(  async( to, from, next ) => {
+
+//	const authorized = await canAccess()
+
+//	authorized ? next() : ({ name: 'pokemon-home' })
+
+//})
+/*TODO*/
+
 export default router

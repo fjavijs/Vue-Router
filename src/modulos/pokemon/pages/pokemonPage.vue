@@ -7,7 +7,6 @@
 </template>
 <script>
     export default {
-
         props: {
             id: {
                 type: Number,
@@ -32,7 +31,7 @@
                     //console.log(pokemon)
                     this.pokemon = pokemon
                 } catch (e) {
-                    // SAcar al usuario de la pantalla
+                    // Sacar al usuario de la pantalla
                     this.$router.push('/')
                     console.log('No hay nada que hacer aqui')
                 }
